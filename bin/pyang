@@ -168,6 +168,10 @@ Validates the YANG module in <filename> (or stdin), and all its dependencies."""
                              action="store_true",
                              help="Do not recurse into directories in the \
                                    yang path."),
+        optparse.make_option("--no-use-env",
+                             dest="no_use_env",
+                             action="store_true",
+                             help="Do not use environment in search for YANG modules."),
         ]
 
     optparser = optparse.OptionParser(usage, add_help_option = False)
@@ -231,7 +235,8 @@ Validates the YANG module in <filename> (or stdin), and all its dependencies."""
         path += os.pathsep + "."
 
     repos = pyang.FileRepository(path, no_path_recurse=o.no_path_recurse,
-                                 verbose=o.verbose)
+                                use_env=bool(not o.no_use_env),
+                                verbose=o.verbose)
 
     ctx = pyang.Context(repos)
 
